@@ -1,28 +1,19 @@
 
-bool bpmOk( float bpm ) {
-  
-  if(bpm < 70 || bpm > 150) {
-    return false;
-  } 
-
-  return true;
+bool out_of_range(float min, float max, float val)
+{
+  return val < min || val > max ;
 }
 
-bool spo2Ok(float spo2) {
+bool bpmOk( float bpm ) 
+{
+  return !out_of_range( 70, 150, bpm );
+}
 
-  if(spo2 < 80) {
-    return false;
-  } 
-  
-  return true;
+bool spo2Ok(float spo2) 
+{
+  return !out_of_range( 80, 100, spo2 );
 }
 
 bool respRateOk(float respRate) {
-  
-  if(respRate < 30 || respRate > 60) {
-    return false;
-  }
-
-  return true;
+  return !out_of_range( 30, 60, respRate );
 }
-

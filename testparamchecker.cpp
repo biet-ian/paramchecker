@@ -1,6 +1,12 @@
 #include "paramchecker.h"
 #include <gtest/gtest.h>
- 
+
+TEST(VitalsTest, RANGE) { 
+    ASSERT_EQ(false, out_of_range( -1,2,0) );
+    ASSERT_EQ(true, out_of_range(-1,2,2.001) );
+    ASSERT_EQ(true, out_of_range(-1,2,-1.001) );
+}
+
 TEST(VitalsTest, BPM) { 
     ASSERT_EQ(true, bpmOk(100));
     ASSERT_EQ(false, bpmOk(69));

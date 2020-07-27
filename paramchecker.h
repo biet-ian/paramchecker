@@ -1,6 +1,5 @@
 
-// bool vitalsAreOk(float bpm, float spo2, float respRate);
-
+bool out_of_range(float min, float max, float val);
 
 bool bpmOk( float bpm );
 

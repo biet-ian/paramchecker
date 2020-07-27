@@ -10,7 +10,7 @@ TEST(VitalsTest, SPO2) {
 }
  
 TEST(VitalsTest, RESP_RATE) {
-    ASSERT_EQ(false, respRateOk(50));
+    ASSERT_EQ(true, respRateOk(50));
 }
 
 int main(int argc, char **argv) {

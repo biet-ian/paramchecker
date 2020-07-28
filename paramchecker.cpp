@@ -1,4 +1,4 @@
-
+#include "paramchecker.h"
 bool out_of_range(float min, float max, float val)
 {
   return val < min || val > max ;
@@ -19,7 +19,28 @@ bool respRateOk(float respRate)
   return !out_of_range( 30, 60, respRate );
 }
 
-bool vitalsAreOk(float bpm, float spo2, float respRate) 
+typedef bool (*fp)(float);
+struct vital_check{
+  vital_param param;
+  float min;
+  float max;
+  fp ok;
+};
+
+const vital_check vitals[]={
+  {vital_param::bpm, 70,150, bpmOk},
+  {vital_param::spo2, 80,100, spo2Ok},
+  {vital_param::respRate, 30,60, respRateOk},
+};
+
+bool vitalsAreOk(vital arr[], unsigned size ) 
 {
-  return bpmOk(bpm) && spo2Ok(spo2) && respRateOk(respRate);
+  for( unsigned v=0; v < size; v++ )
+  {
+      if( !vitals[arr[v].param].ok(arr[v].val) )
+      { 
+        return false;
+      }
+  }
+  return true;
 }

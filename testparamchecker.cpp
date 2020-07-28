@@ -25,10 +25,33 @@ TEST(VitalsTest, RESP_RATE) {
 }
 
 TEST(VitalsTest, VITALS) {
-    ASSERT_EQ(true, vitalsAreOk(100,80,50));
-    ASSERT_EQ(false, vitalsAreOk(69,80,50));
-    ASSERT_EQ(false, vitalsAreOk(0,0,0));
-    ASSERT_EQ(false, vitalsAreOk(101,0,61));
+    vital arr1[] = {
+        {vital_param::bpm,80},
+        {vital_param::bpm,80},
+        {vital_param::bpm,80},
+    };
+    ASSERT_EQ(true, vitalsAreOk( arr1, sizeof(arr1)/sizeof(arr1[0])));
+
+    vital arr2[] = { 
+        {vital_param::bpm,80},
+        {vital_param::spo2,90},
+        {vital_param::respRate,50},
+    };
+    ASSERT_EQ(true, vitalsAreOk( arr2, sizeof(arr2)/sizeof(arr2[0])));
+
+    vital arr3[] = { 
+        {vital_param::bpm,80},
+        {vital_param::spo2,60},
+        {vital_param::respRate,50},
+    };
+    ASSERT_EQ(false, vitalsAreOk( arr3, sizeof(arr3)/sizeof(arr3[0])));
+
+    vital arr4[] = { 
+        {vital_param::bpm,80},
+        {vital_param::spo2,60},
+        {vital_param::respRate,0},
+    };
+    ASSERT_EQ(false, vitalsAreOk( arr4, sizeof(arr4)/sizeof(arr4[0])));
 }
 
 int main(int argc, char **argv) {

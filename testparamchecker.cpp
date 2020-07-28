@@ -24,6 +24,13 @@ TEST(VitalsTest, RESP_RATE) {
     ASSERT_EQ(false, respRateOk(60.01));
 }
 
+TEST(VitalsTest, VITALS) {
+    ASSERT_EQ(true, vitalsAreOk(100,80,50));
+    ASSERT_EQ(false, vitalsAreOk(69,80,50));
+    ASSERT_EQ(false, vitalsAreOk(0,0,0));
+    ASSERT_EQ(false, vitalsAreOk(101,0,61));
+}
+
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

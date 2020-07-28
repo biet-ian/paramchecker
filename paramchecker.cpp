@@ -14,6 +14,12 @@ bool spo2Ok(float spo2)
   return !out_of_range( 80, 100, spo2 );
 }
 
-bool respRateOk(float respRate) {
+bool respRateOk(float respRate) 
+{
   return !out_of_range( 30, 60, respRate );
+}
+
+bool vitalsAreOk(float bpm, float spo2, float respRate) 
+{
+  return bpmOk(bpm) && spo2Ok(spo2) && respRateOk(respRate);
 }

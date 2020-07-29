@@ -21,16 +21,13 @@ bool respRateOk(float respRate)
 
 typedef bool (*fp)(float);
 struct vital_check{
-  vital_param param;
-  float min;
-  float max;
   fp ok;
 };
 
 const vital_check vitals[]={
-  {vital_param::bpm, 70,150, bpmOk},
-  {vital_param::spo2, 80,100, spo2Ok},
-  {vital_param::respRate, 30,60, respRateOk},
+  [vital_param::bpm] = {bpmOk},
+  [vital_param::spo2] = {spo2Ok},
+  [vital_param::respRate] = {respRateOk},
 };
 
 bool vitalsAreOk(vital arr[], unsigned size ) 

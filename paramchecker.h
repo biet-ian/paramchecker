@@ -1,22 +1,47 @@
+#include <vector>
+#include <cmath>
 
-enum vital_param{
+enum VITAL_ID {
   bpm,
   spo2,
   respRate,
+  avgECG
 };
 
-struct vital{
-    vital_param param;
-    float val;
+struct Measurement{
+    VITAL_ID id;
+    float measured_value;
 };
 
-bool out_of_range(float min, float max, float val);
+class IVitalCheck {
+  public:
+    virtual bool measurementIsOk(float measurement) = 0; //pure virtual
+};
 
-bool bpmOk( float bpm );
+class VitalRangeCheck: public IVitalCheck {
+  public:
+    explicit VitalRangeCheck(float lower, float upper) {
+      m_lower = lower;
+      m_upper = upper;
+    }
+    virtual bool measurementIsOk(float measurement) {
+      return (measurement >= m_lower && measurement <= m_upper);
+    }
+  private:
+    float m_lower;
+    float m_upper;
+};
 
-bool spo2Ok(float spo2);
+class VitalValueCheck: public IVitalCheck {
+  public:
+    explicit VitalValueCheck(float alarmValue) {
+      m_alarmValue = alarmValue;
+    }
+    virtual bool measurementIsOk(float measurement) {
+      return std::abs(measurement - m_alarmValue) < 0.001;
+    }
+  private:
+    float m_alarmValue;
+};
 
-bool respRateOk(float respRate);
-
-bool vitalsAreOk(vital arr[], unsigned size ) ;
-
+std::vector<bool> vitalsAreOk(const std::vector<Measurement>& measurements);

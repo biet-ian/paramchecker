@@ -1,43 +1,18 @@
 #include "paramchecker.h"
-bool out_of_range(float min, float max, float val)
-{
-  return val < min || val > max ;
-}
+#include <iostream>
 
-bool bpmOk( float bpm ) 
-{
-  return !out_of_range( 70, 150, bpm );
-}
-
-bool spo2Ok(float spo2) 
-{
-  return !out_of_range( 80, 100, spo2 );
-}
-
-bool respRateOk(float respRate) 
-{
-  return !out_of_range( 30, 60, respRate );
-}
-
-typedef bool (*fp)(float);
-struct vital_check{
-  fp ok;
+IVitalCheck* vitalCheckers[] = {
+  [bpm] = new VitalRangeCheck(70, 150),
+  [spo2] = new VitalRangeCheck(80, 100),
+  [respRate] = new VitalRangeCheck(30, 60),
+  [avgECG] = new VitalValueCheck(0),
 };
 
-const vital_check vitals[]={
-  [vital_param::bpm] = {bpmOk},
-  [vital_param::spo2] = {spo2Ok},
-  [vital_param::respRate] = {respRateOk},
-};
-
-bool vitalsAreOk(vital arr[], unsigned size ) 
-{
-  for( unsigned v=0; v < size; v++ )
-  {
-      if( !vitals[arr[v].param].ok(arr[v].val) )
-      { 
-        return false;
-      }
+std::vector<bool> vitalsAreOk(const std::vector<Measurement>& measurements) {
+  std::vector<bool> results;
+  for(auto t = measurements.begin(); t != measurements.end(); t++) {
+    bool vitalResult = vitalCheckers[t->id]->measurementIsOk(t->measured_value);
+    std::cout << "Vital-check result is " << vitalResult << std::endl;
   }
-  return true;
+  return results;
 }
